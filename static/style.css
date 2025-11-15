@@ -1,12 +1,18 @@
 /* Fuente elegante y moderna */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&display=swap');
+@font-face {
+  font-family: 'NeueMontreal';
+  src: url('/static/fonts/NeueMontreal-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
 
 /* FONDO NEGRO CON BRILLOS MORADOS */
 body {
+  font-family: 'NeueMontreal', sans-serif;
   background: radial-gradient(circle at top left,
     #3a0ca33a 0%,
     #240046 30%,
-    #000000 70%);
+    #615795 70%);
   
   display: flex;
   min-height: 100vh;
@@ -37,8 +43,8 @@ body {
   overflow: hidden;
 
   box-shadow:
-    0 0 35px rgba(140, 23, 255, 0.25),
-    0 0 90px rgba(140, 23, 255, 0.15);
+    0 0 35px #2d274b,
+    0 0 90px #2d274b;
 
   border: 2px solid rgba(155, 70, 255, 0.35);
 }
@@ -62,14 +68,21 @@ body {
 
 /* TITULOS */
 h2 {
+  font-family: 'NeueMontreal', sans-serif;
   font-size: 34px;
-  background: linear-gradient(90deg,#bb86fc, #e0b3ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   font-weight: 700;
   letter-spacing: 2px;
   margin-bottom: 25px;
+
+  /* Degradado o color de fondo del texto */
+  background: linear-gradient(90deg, #9693a5, #9693a5);
+
+  /* 🔹 Propiedades necesarias para mostrar el fondo solo dentro del texto */
+  -webkit-background-clip: text; /* soporte Chrome, Safari */
+  background-clip: text; /* estándar */
+  -webkit-text-fill-color: transparent; /* hace que el texto sea “transparente” y se vea el fondo */
 }
+
 
 /* CAJAS DE INPUT */
 .input-box {
@@ -81,8 +94,8 @@ h2 {
   width: 340px;
   height: 47px;
 
-  box-shadow: 0 0 12px rgba(170, 0, 255, 0.18);
-  border: 1px solid rgba(193, 90, 255, 0.3);
+  box-shadow: 0 0 12px #2d274b;
+  border: 1px solid #2d274b;
 
   margin-bottom: 20px;
   backdrop-filter: blur(4px);
@@ -101,13 +114,13 @@ h2 {
 /* LINK */
 .form-section a {
   font-size: 14px;
-  color: #c77dff;
+  color: #615795;
   text-decoration: none;
   margin-top: 16px;
   transition: 0.2s;
 }
 .form-section a:hover {
-  color: #dbaaff;
+  color:#615795;
   text-shadow: 0 0 8px #c77dff;
 }
 
@@ -118,24 +131,40 @@ h2 {
   font-size: 18px;
   font-weight: 700;
   border-radius: 10px;
-  border: 1px solid rgba(170, 0, 255, 0.5);
+  border: 1px solid #251f45;
 
-  background: linear-gradient(90deg,#7b2cbf,#9d4edd);
+  background: linear-gradient(90deg,#251f45,#615795);
   color: white;
   cursor: pointer;
 
   transition: 0.25s;
-  box-shadow: 0 4px 20px rgba(130, 0, 255, 0.4);
+  box-shadow: 0 4px 20px #251f45;
 }
 .form-section button:hover {
-  background: linear-gradient(90deg,#b517ff,#7209b7);
-  box-shadow: 0 6px 26px rgba(170, 0, 255, 0.6);
+  background: linear-gradient(90deg,#615795,#251f45);
+  box-shadow: 0 6px 26px #251f45;
+}
+
+/* -------------------------
+   OVERRIDE: BOTÓN REGISTRARSE
+   (solo cambié colores aquí)
+   ------------------------- */
+#registro-section button {
+  /* degradado morado del panel lateral */
+  background: linear-gradient(90deg, #7209b7, #615795, #251f45);
+  box-shadow: 0 4px 20px #4e3c7e;
+  border-color: #4e3c7e;
+}
+
+#registro-section button:hover {
+  background: linear-gradient(90deg, #251f45, #615795, #7209b7);
+  box-shadow: 0 6px 26px #4e3c7e;
 }
 
 /* PANEL LATERAL */
 .slide-panel {
   flex: 1;
-  background: linear-gradient(135deg,#7209b7,#480ca8,#3a0ca3);
+  background: linear-gradient(135deg,#7209b7,#615795,#251f45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,7 +194,7 @@ h2 {
 
 /* BOTÓN DEL PANEL */
 .slide-content button {
-  border: 2px solid #d0a6ff;
+  border: 2px solid #251f45;
   background: transparent;
   color: #fff;
   font-size: 18px;
@@ -179,7 +208,7 @@ h2 {
 }
 .slide-content button:hover {
   background: rgba(255,255,255,0.12);
-  box-shadow: 0 0 18px rgba(195, 130, 255, 0.6);
+  box-shadow: 0 0 18px #251f45;
 }
 
 /* RESPONSIVE */
