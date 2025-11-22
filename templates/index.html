@@ -54,114 +54,86 @@
     </div>
   </div>
   <script>
-   // ---- SLIDE ENTRE LOGIN Y REGISTRO ----
+
+// ------------------ CAMBIO ENTRE LOGIN Y REGISTRO ------------------
 const btnSlide = document.getElementById("slide-btn");
-const slideTitle = document.getElementById("slide-title");
-const slideText = document.getElementById("slide-text");
-const registroSection = document.getElementById("registro-section");
 const loginSection = document.getElementById("login-section");
-const slidePanel = document.getElementById("slide-panel");
-let panelState = "login"; // login / registro
+const registroSection = document.getElementById("registro-section");
+let mostrando = "login";
 
-btnSlide.addEventListener('click', ()=>{
-  if(panelState==="login"){
-    // Mostrar registro
-    loginSection.classList.add('hidden');
-    registroSection.classList.remove('hidden');
-    slideTitle.textContent = "¡Hola!";
-    slideText.textContent = "¿Ya tienes cuenta? Ingresa tus datos para acceder a todas las funciones.";
+btnSlide.addEventListener("click", () => {
+  if (mostrando === "login") {
+    loginSection.classList.add("hidden");
+    registroSection.classList.remove("hidden");
     btnSlide.textContent = "Iniciar Sesión";
-    panelState = "registro";
-    slidePanel.style.background = "linear-gradient(120deg,#3AB397 40%,#53e0c6 100%)";
-  }else{
-    // Mostrar login
-    registroSection.classList.add('hidden');
-    loginSection.classList.remove('hidden');
-    slideTitle.textContent = "¡Bienvenido!";
-    slideText.textContent = "¿Eres nuevo aquí? Regístrate para usar todas las funciones del sitio.";
+    mostrando = "registro";
+  } else {
+    registroSection.classList.add("hidden");
+    loginSection.classList.remove("hidden");
     btnSlide.textContent = "Registrarse";
-    panelState = "login";
-    slidePanel.style.background = "linear-gradient(120deg,#3AA8AD 70%,#53e0c6 100%)";
+    mostrando = "login";
   }
 });
 
-// ---- REGISTRO AJAX ----
-document.getElementById('registro-form').addEventListener('submit', async function(e) {
+
+// ------------------ REGISTRO ------------------
+document.getElementById("registro-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const nombre = document.getElementById('nombre').value.trim();
-  const apellido = document.getElementById('apellido').value.trim();
-  const correo = document.getElementById('correo').value.trim();
-  const nacimiento = document.getElementById('nacimiento').value.trim();
-  const password = document.getElementById('password').value.trim();
-
-  const payload = {
-    nombre,
-    apellido,
-    correo,
-    nacimiento,
-    password
+  const datos = {
+    nombre: document.getElementById("nombre").value,
+    apellido: document.getElementById("apellido").value,
+    correo: document.getElementById("correo").value,
+    nacimiento: document.getElementById("nacimiento").value,
+    password: document.getElementById("password").value
   };
 
-  try {
-    const response = await fetch('/dato/api', { // asegúrate que esta ruta exista en tu backend
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-    });
-    const resultado = await response.json();
+  const res = await fetch("/api/registro", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(datos)
+  });
 
-    if(response.ok){
-      alert('¡Registro exitoso!\nBienvenido/a, ' + nombre + ' ' + apellido);
-      e.target.reset();
-      // Opcional: cambia automáticamente a login
-      registroSection.classList.add('hidden');
-      loginSection.classList.remove('hidden');
-      slideTitle.textContent = "¡Bienvenido!";
-      slideText.textContent = "¿Eres nuevo aquí? Regístrate para usar todas las funciones del sitio.";
-      btnSlide.textContent = "Registrarse";
-      panelState = "login";
-      slidePanel.style.background = "linear-gradient(120deg,#3AA8AD 70%,#53e0c6 100%)";
-    }else{
-      alert('❌ Error al guardar los datos\n' + (resultado?.mensaje || 'Intenta de nuevo.'));
-    }
-  } catch (err){
-    alert('⚠️ Error de conexión con el servidor');
+  const data = await res.json();
+
+  if (data.ok) {
+    alert("Registro exitoso.");
+    registroSection.classList.add("hidden");
+    loginSection.classList.remove("hidden");
+    btnSlide.textContent = "Registrarse";
+    mostrando = "login";
+  } else {
+    alert("Error registrando usuario.");
   }
 });
 
-// ---- LOGIN AJAX ----
-document.getElementById('login-form').addEventListener('submit', async function(e){
+
+// ------------------ LOGIN ------------------
+document.getElementById("login-form").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const correo = e.target.loginCorreo.value.trim();
-  const password = e.target.loginClave.value.trim();
-
-  const payload = {
-    correo,
-    password
+  const datos = {
+    correo: e.target.loginCorreo.value,
+    password: e.target.loginClave.value
   };
 
-  try {
-    const response = await fetch('/api/login', { // asegúrate que esta ruta exista en tu backend
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-    });
-    const resultado = await response.json();
+  const res = await fetch("/api/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(datos)
+  });
 
-    if(response.ok && resultado?.ok){
-      alert('¡Sesión iniciada para: ' + correo + '!');
-      e.target.reset();
-      // Aquí podrías redirigir a otra página, etc.
-      // window.location.href = "/dashboard";
-    }else{
-      alert('❌ Usuario o contraseña incorrectos');
-    }
-  } catch (err){
-    alert('⚠️ Error de conexión con el servidor');
+  const data = await res.json();
+
+  if (data.ok) {
+    alert("Datos correctos ✔ Iniciando sesión...");
+    window.location.href = "/dashboard.html";
+  } else {
+    alert("Correo o contraseña incorrectos.");
   }
 });
-  </script>
+
+</script>
+
 </body>
 </html>

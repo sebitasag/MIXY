@@ -1,89 +1,104 @@
 from flask import Flask, request, jsonify, send_file
 from psycopg2 import connect, extras
-from cryptography.fernet import Fernet
-
-"""Flask: Framework que nos permite crear un servidor web y definir rutas para nuestra API.
-
-request y jsonify: Permiten recibir datos del cliente (por ejemplo, en formato JSON) y enviar respuestas también en JSON.
-
-psycopg2: Librería que facilita la conexión y consultas a bases de datos PostgreSQL.
-
-extras.RealDictCursor: Permite que los resultados de las consultas se devuelvan como diccionarios, en lugar de tuplas.
-
-cryptography.fernet: Librería para encriptar y desencriptar contraseñas de manera segura."""
+import bcrypt
 
 app = Flask(__name__)
-key = Fernet.generate_key()
 
-#se crea las constante para conectarse a postgres
-host = 'localhost' 
+# --- BASE DE DATOS ---
+host = 'localhost'
 port = 5432
-dbname = 'proyecto_mixy' #nombre de la base de datos
+dbname = 'proyecto_mixy'
 username = 'postgres'
 password = '123456'
 
-"""Se definen las constantes para conectarse a PostgreSQL:
-host: dirección del servidor.
-port: puerto de conexión (por defecto, 5432).
-dbname: nombre de la base de datos.
-username: usuario de PostgreSQL.
-password: contraseña del usuario."""
+
+def get_connection():
+    return connect(host=host, port=port, dbname=dbname, user=username, password=password)
+
+
+# ----------------------------------------
+# RUTA PRINCIPAL
+# ----------------------------------------
 
 @app.route('/')
 def inicio():
     return send_file('templates/index.html')
 
-def get_connection(): 
-    #propiedades
-    conn = connect(host=host, port=port, dbname=dbname, user=username, password=password)
-    return conn
-    """Esta función crea y devuelve una conexión activa con la base de datos 
-    PostgreSQL usando los parámetros definidos anteriormente."""
 
-@app.get('/datos') #Ruta: /api/users  con metodo get
-def get_users():
+# ----------------------------------------
+# REGISTRO (COINCIDE CON /api/registro)
+# ----------------------------------------
+@app.post('/api/registro')
+def create_user():
+    data = request.get_json()
+
+    nombre = data['nombre']
+    apellido = data['apellido']
+    correo = data['correo']
+    nacimiento = data['nacimiento']
+
+    # encriptar contraseña
+    password_plano = data['password'].encode('utf-8')
+    password_hash = bcrypt.hashpw(password_plano, bcrypt.gensalt())
+
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
+
+    try:
+        cur.execute("""
+            INSERT INTO usuarios (nombre, apellido, correo, nacimiento, password)
+            VALUES (%s, %s, %s, %s, %s)
+            RETURNING id, nombre, apellido, correo;
+        """, (nombre, apellido, correo, nacimiento, password_hash))
+
+        nuevo_usuario = cur.fetchone()
+        conn.commit()
+
+        return jsonify({"ok": True, "usuario": nuevo_usuario}), 201
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({"ok": False, "mensaje": "Error registrando usuario"}), 400
     
+    finally:
+        cur.close()
+        conn.close()
 
-    cur.execute('SELECT * FROM usuarios')
-    users = cur.fetchall()
 
-    cur.close()
-    conn.close()
+# ----------------------------------------
+# LOGIN (COINCIDE CON /api/login)
+# ----------------------------------------
+@app.post('/api/login')
+def login():
+    data = request.get_json()
 
-    return jsonify(users)
-    """Se conecta a la base de datos.
-Se ejecuta una consulta SQL que selecciona todos los usuarios.
-Se devuelven los resultados como una lista de diccionarios JSON."""
+    correo = data['correo']
+    password = data['password'].encode('utf-8')
 
-@app.post('/dato/api' ) #Ruta: /api/users
-def create_user():
-    new_user = request.get_json()
-    nombre = new_user['nombre']
-    apellido = new_user['apellido']
-    correo = new_user['correo']
-    nacimiento = new_user['nacimiento']
-    password = Fernet(key).encrypt(bytes(new_user['password'], 'utf-8'))
-    
     conn = get_connection()
-    cur = conn.cursor()
-    
-    cur.execute('INSERT INTO usuarios (nombre, apellido, correo, nacimiento, password) VALUES (%s, %s, %s, %s, %s) RETURNING *', 
-            (nombre, apellido, correo, nacimiento, password))
+    cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
+    try:
+        cur.execute('SELECT * FROM usuarios WHERE correo = %s;', (correo,))
+        usuario = cur.fetchone()
 
-    new_created_user = cur.fetchone()
-    print(new_created_user)
-    conn.commit()
+        if not usuario:
+            return jsonify({"ok": False, "error": "Correo no registrado"}), 404
 
-    cur.close()
-    conn.close()
-    return jsonify(new_created_user)
-    """Se encripta la contraseña antes de insertarla en la base de datos usando Fernet.encrypt().
-Se ejecuta una sentencia SQL INSERT.
-Se devuelve el nuevo usuario creado."""
+        password_guardada = usuario['password'].tobytes()  # PostgreSQL BYTEA → bytes
 
+        if not bcrypt.checkpw(password, password_guardada):
+            return jsonify({"ok": False, "error": "Contraseña incorrecta"}), 401
+
+        return jsonify({"ok": True, "mensaje": "Inicio de sesión exitoso"}), 200
+
+    except Exception as e:
+        print("Error:", e)
+        return jsonify({"ok": False, "error": "Error interno del servidor"}), 500
+
+    finally:
+        cur.close()
+        conn.close()
 
 
 if __name__ == '__main__':
