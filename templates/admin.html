@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Mixy</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/static/admin.css">
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+        <div class="logo-section">
+            <i class="fas fa-shield-halved"></i>
+            <h1>Admin Panel</h1>
+        </div>
+        
+        <nav class="admin-nav">
+            <button class="admin-nav-item active" data-tab="artistas">
+                <i class="fas fa-user-music"></i>
+                <span>Artistas</span>
+            </button>
+            <button class="admin-nav-item" data-tab="albumes">
+                <i class="fas fa-compact-disc"></i>
+                <span>Álbumes</span>
+            </button>
+            <button class="admin-nav-item" data-tab="canciones">
+                <i class="fas fa-music"></i>
+                <span>Canciones</span>
+            </button>
+            <button class="admin-nav-item" data-tab="estadisticas">
+                <i class="fas fa-chart-line"></i>
+                <span>Estadísticas</span>
+            </button>
+        </nav>
+
+        <div class="admin-footer">
+            <a href="/home" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Volver al inicio
+            </a>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="admin-content">
+        <header class="admin-header">
+            <h2 id="section-title">Gestión de Artistas</h2>
+            <div class="admin-user">
+                <i class="fas fa-user-shield"></i>
+                <span>Administrador</span>
+            </div>
+        </header>
+
+        <!-- TAB: ARTISTAS -->
+        <section class="admin-tab active" id="tab-artistas">
+            <div class="form-card">
+                <h3><i class="fas fa-plus-circle"></i> Crear Nuevo Artista</h3>
+                <form id="form-artista" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="nombre-artista">
+                            <i class="fas fa-user"></i> Nombre del Artista
+                        </label>
+                        <input type="text" id="nombre-artista" name="nombre_artista" required placeholder="Ej: Bad Bunny">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-image"></i> Avatar del Artista
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="avatar-artista" name="avatar" accept="image/*">
+                            <label for="avatar-artista" class="file-label">
+                                <i class="fas fa-cloud-arrow-up"></i>
+                                <span>Seleccionar imagen</span>
+                            </label>
+                            <div class="file-preview" id="preview-avatar"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="verificado-artista" name="verificado">
+                            <span><i class="fas fa-circle-check"></i> Artista Verificado</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Crear Artista
+                    </button>
+                </form>
+            </div>
+
+            <div class="list-card">
+                <h3><i class="fas fa-list"></i> Artistas Registrados</h3>
+                <div class="artists-list" id="artists-list">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: ÁLBUMES -->
+        <section class="admin-tab" id="tab-albumes">
+            <div class="form-card">
+                <h3><i class="fas fa-plus-circle"></i> Crear Nuevo Álbum</h3>
+                <form id="form-album" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="titulo-album">
+                            <i class="fas fa-compact-disc"></i> Título del Álbum
+                        </label>
+                        <input type="text" id="titulo-album" name="titulo" required placeholder="Ej: Un Verano Sin Ti">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="artista-album">
+                                <i class="fas fa-user-music"></i> Artista
+                            </label>
+                            <select id="artista-album" name="artista_id" required>
+                                <option value="">Seleccionar artista</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="genero-album">
+                                <i class="fas fa-guitar"></i> Género
+                            </label>
+                            <select id="genero-album" name="genero_id">
+                                <option value="">Seleccionar género</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha-album">
+                            <i class="fas fa-calendar"></i> Fecha de Lanzamiento
+                        </label>
+                        <input type="date" id="fecha-album" name="fecha_lanzamiento">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-image"></i> Portada del Álbum
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="cover-album" name="cover" accept="image/*">
+                            <label for="cover-album" class="file-label">
+                                <i class="fas fa-cloud-arrow-up"></i>
+                                <span>Seleccionar imagen</span>
+                            </label>
+                            <div class="file-preview" id="preview-cover-album"></div>
+                        </div>
+                    </div>
+
+                    <!-- NUEVO: Opción para subir canciones con el álbum -->
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                            <input type="checkbox" id="upload-songs-with-album" style="width: 20px; height: 20px;">
+                            <span><i class="fas fa-folder-music"></i> Subir canciones del álbum ahora (Opcional)</span>
+                        </label>
+                        
+                        <div id="songs-upload-section" style="display: none; padding: 16px; background: rgba(107, 95, 207, 0.05); border-radius: 8px; border: 1px dashed rgba(107, 95, 207, 0.3);">
+                            <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 12px;">
+                                <i class="fas fa-info-circle"></i> Selecciona múltiples archivos MP3. Usarán la portada del álbum.
+                            </p>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="album-songs-files" name="songs" accept="audio/*" multiple>
+                                <label for="album-songs-files" class="file-label">
+                                    <i class="fas fa-folder-open"></i>
+                                    <span>Seleccionar canciones (MP3)</span>
+                                </label>
+                                <div class="file-preview" id="preview-album-songs"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Crear Álbum
+                    </button>
+                </form>
+            </div>
+
+            <div class="list-card">
+                <h3><i class="fas fa-list"></i> Álbumes Registrados</h3>
+                <div class="albums-list" id="albums-list">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: CANCIONES -->
+        <section class="admin-tab" id="tab-canciones">
+            <div class="form-card">
+                <h3><i class="fas fa-plus-circle"></i> Subir Nueva Canción</h3>
+                <form id="form-cancion" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="titulo-cancion">
+                            <i class="fas fa-music"></i> Título de la Canción
+                        </label>
+                        <input type="text" id="titulo-cancion" name="titulo" required placeholder="Ej: Tití Me Preguntó">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="artista-cancion">
+                                <i class="fas fa-user-music"></i> Artista
+                            </label>
+                            <select id="artista-cancion" name="artista_id" required>
+                                <option value="">Seleccionar artista</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="album-cancion">
+                                <i class="fas fa-compact-disc"></i> Álbum
+                            </label>
+                            <select id="album-cancion" name="album_id">
+                                <option value="">Seleccionar álbum</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="duracion-cancion">
+                            <i class="fas fa-clock"></i> Duración (segundos)
+                        </label>
+                        <input type="number" id="duracion-cancion" name="duracion_segundos" required placeholder="Ej: 240">
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-file-audio"></i> Archivo de Audio (MP3)
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="archivo-cancion" name="archivo" accept="audio/*" required>
+                            <label for="archivo-cancion" class="file-label">
+                                <i class="fas fa-cloud-arrow-up"></i>
+                                <span>Seleccionar audio</span>
+                            </label>
+                            <div class="file-preview" id="preview-audio"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <i class="fas fa-image"></i> Cover de la Canción (Opcional)
+                        </label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="cover-cancion" name="cover" accept="image/*">
+                            <label for="cover-cancion" class="file-label">
+                                <i class="fas fa-cloud-arrow-up"></i>
+                                <span>Seleccionar imagen</span>
+                            </label>
+                            <div class="file-preview" id="preview-cover-cancion"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-save"></i> Subir Canción
+                    </button>
+                </form>
+            </div>
+
+            <div class="list-card">
+                <h3><i class="fas fa-list"></i> Canciones Subidas</h3>
+                <div class="songs-list" id="songs-list">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: ESTADÍSTICAS -->
+        <section class="admin-tab" id="tab-estadisticas">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-music"></i>
+                    <div class="stat-info">
+                        <h3 id="stat-canciones">0</h3>
+                        <p>Canciones</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-compact-disc"></i>
+                    <div class="stat-info">
+                        <h3 id="stat-albumes">0</h3>
+                        <p>Álbumes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user-music"></i>
+                    <div class="stat-info">
+                        <h3 id="stat-artistas">0</h3>
+                        <p>Artistas</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <h3 id="stat-usuarios">0</h3>
+                        <p>Usuarios</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <h3><i class="fas fa-chart-line"></i> Sistema Funcionando</h3>
+                <p style="color: var(--text-secondary); padding: 20px 0;">El panel de administración está activo y listo para gestionar contenido.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Notificaciones -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+// ==================== VARIABLES GLOBALES ====================
+let currentTab = 'artistas';
+
+// ==================== INICIALIZACIÓN ====================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔐 Admin Panel cargado');
+    
+    checkAdminSession();
+    setupTabs();
+    setupForms();
+    loadData();
+    setupFilePreviews();
+    setupAlbumSongsToggle();
+});
+
+// ==================== TOGGLE SUBIR CANCIONES CON ÁLBUM ====================
+function setupAlbumSongsToggle() {
+    const checkbox = document.getElementById('upload-songs-with-album');
+    const section = document.getElementById('songs-upload-section');
+    
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+            section.style.display = 'block';
+        } else {
+            section.style.display = 'none';
+            document.getElementById('album-songs-files').value = '';
+            document.getElementById('preview-album-songs').textContent = '';
+        }
+    });
+}
+
+// ==================== VERIFICAR SESIÓN ====================
+async function checkAdminSession() {
+    try {
+        const response = await fetch('/api/perfil');
+        const data = await response.json();
+        
+        if (!data.ok) {
+            window.location.href = '/';
+        }
+    } catch (error) {
+        console.error('Error al verificar sesión:', error);
+        window.location.href = '/';
+    }
+}
+
+// ==================== TABS ====================
+function setupTabs() {
+    const navButtons = document.querySelectorAll('.admin-nav-item');
+    
+    navButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tab = button.dataset.tab;
+            switchTab(tab);
+        });
+    });
+}
+
+function switchTab(tab) {
+    currentTab = tab;
+    
+    document.querySelectorAll('.admin-nav-item').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+    
+    document.querySelectorAll('.admin-tab').forEach(t => {
+        t.classList.remove('active');
+    });
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    
+    const titles = {
+        'artistas': 'Gestión de Artistas',
+        'albumes': 'Gestión de Álbumes',
+        'canciones': 'Gestión de Canciones',
+        'estadisticas': 'Estadísticas'
+    };
+    document.getElementById('section-title').textContent = titles[tab];
+    
+    loadData();
+}
+
+// ==================== FORMULARIOS ====================
+function setupForms() {
+    document.getElementById('form-artista').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await submitArtista(e.target);
+    });
+    
+    document.getElementById('form-album').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await submitAlbumWithSongs(e.target);
+    });
+    
+    document.getElementById('form-cancion').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await submitCancion(e.target);
+    });
+}
+
+// ==================== CARGAR DATOS ====================
+async function loadData() {
+    switch(currentTab) {
+        case 'artistas':
+            await loadArtistas();
+            break;
+        case 'albumes':
+            await loadArtistasSelect();
+            await loadGenerosSelect();
+            await loadAlbumes();
+            break;
+        case 'canciones':
+            await loadArtistasSelect();
+            await loadAlbumesSelect();
+            await loadCanciones();
+            break;
+        case 'estadisticas':
+            await loadEstadisticas();
+            break;
+    }
+}
+
+// ==================== ARTISTAS ====================
+async function loadArtistas() {
+    try {
+        const response = await fetch('/api/artistas');
+        const data = await response.json();
+        
+        const container = document.getElementById('artists-list');
+        
+        if (data.ok && data.artistas && data.artistas.length > 0) {
+            container.innerHTML = data.artistas.map(artista => `
+                <div class="list-item">
+                    <img src="${artista.avatar_url || 'https://via.placeholder.com/60/1a1a1a/6B5FCF?text=A'}" 
+                         alt="${artista.nombre_artista}" 
+                         class="list-item-image rounded">
+                    <div class="list-item-info">
+                        <h4>${artista.nombre_artista}</h4>
+                        <p>${artista.num_canciones || 0} canciones</p>
+                    </div>
+                    ${artista.verificado ? '<span class="list-item-badge">Verificado</span>' : ''}
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<p class="loading">No hay artistas registrados</p>';
+        }
+    } catch (error) {
+        console.error('Error al cargar artistas:', error);
+    }
+}
+
+async function submitArtista(form) {
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
+    
+    try {
+        const response = await fetch('/api/admin/upload/artista', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.ok) {
+            showNotification('✓ Artista creado exitosamente', 'success');
+            form.reset();
+            document.getElementById('preview-avatar').textContent = '';
+            await loadArtistas();
+        } else {
+            showNotification('Error: ' + data.mensaje, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error al crear artista', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Crear Artista';
+    }
+}
+
+// ==================== ÁLBUMES CON CANCIONES ====================
+async function loadAlbumes() {
+    try {
+        const response = await fetch('/api/albumes');
+        const data = await response.json();
+        
+        const container = document.getElementById('albums-list');
+        
+        if (data.ok && data.albumes && data.albumes.length > 0) {
+            container.innerHTML = data.albumes.map(album => `
+                <div class="list-item">
+                    <img src="${album.cover_url || 'https://via.placeholder.com/60/1a1a1a/6B5FCF?text=A'}" 
+                         alt="${album.titulo}" 
+                         class="list-item-image">
+                    <div class="list-item-info">
+                        <h4>${album.titulo}</h4>
+                        <p>${album.nombre_artista || 'Artista desconocido'}</p>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            container.innerHTML = '<p class="loading">No hay álbumes registrados</p>';
+        }
+    } catch (error) {
+        console.error('Error al cargar álbumes:', error);
+    }
+}
+
+async function submitAlbumWithSongs(form) {
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const uploadSongs = document.getElementById('upload-songs-with-album').checked;
+    const songsFiles = document.getElementById('album-songs-files').files;
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando álbum...';
+    
+    try {
+        // 1. Crear el álbum primero
+        const albumResponse = await fetch('/api/admin/upload/album', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const albumData = await albumResponse.json();
+        
+        if (!albumData.ok) {
+            throw new Error(albumData.mensaje || 'Error al crear álbum');
+        }
+        
+        const albumId = albumData.album.id;
+        const artistaId = formData.get('artista_id');
+        const coverUrl = albumData.album.cover_url;
+        
+        // 2. Si seleccionó subir canciones, subirlas ahora
+        if (uploadSongs && songsFiles && songsFiles.length > 0) {
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo canciones (0/${songsFiles.length})...`;
+            
+            let successCount = 0;
+            let errorCount = 0;
+            
+            for (let i = 0; i < songsFiles.length; i++) {
+                const file = songsFiles[i];
+                const songFormData = new FormData();
+                
+                // ✅ LIMPIAR NOMBRE DEL ARCHIVO
+                let titulo = file.name.replace(/\.[^/.]+$/, ""); // Remover extensión
+                
+                // Remover prefijos como "01. ", "1. ", "001 - ", "01 ", etc.
+                titulo = titulo.replace(/^(\d+[\.\-\s]+)/g, '').trim();
+                
+                // Remover .mp3 si quedó en el medio
+                titulo = titulo.replace(/\.mp3/gi, '').trim();
+                
+                // Remover guiones o espacios extras al inicio
+                titulo = titulo.replace(/^[\s\-_]+/, '').trim();
+                
+                songFormData.append('titulo', titulo);
+                songFormData.append('artista_id', artistaId);
+                songFormData.append('album_id', albumId);
+                songFormData.append('duracion_segundos', 180); // Duración predeterminada
+                songFormData.append('archivo', file);
+                
+                // No agregamos cover porque usará el del álbum
+                
+                try {
+                    const songResponse = await fetch('/api/admin/upload/cancion', {
+                        method: 'POST',
+                        body: songFormData
+                    });
+                    
+                    const songData = await songResponse.json();
+                    
+                    if (songData.ok) {
+                        successCount++;
+                    } else {
+                        errorCount++;
+                        console.error(`Error en ${file.name}:`, songData.mensaje);
+                    }
+                    
+                    submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Subiendo canciones (${i + 1}/${songsFiles.length})...`;
+                    
+                } catch (error) {
+                    console.error(`Error al subir ${file.name}:`, error);
+                    errorCount++;
+                }
+            }
+            
+            if (successCount > 0) {
+                showNotification(`✓ Álbum creado con ${successCount} canción(es). ${errorCount > 0 ? `${errorCount} fallaron.` : ''}`, 'success');
+            } else {
+                showNotification('⚠ Álbum creado pero no se pudieron subir las canciones', 'error');
+            }
+        } else {
+            showNotification('✓ Álbum creado exitosamente', 'success');
+        }
+        
+        // Limpiar formulario
+        form.reset();
+        document.getElementById('preview-cover-album').textContent = '';
+        document.getElementById('preview-album-songs').textContent = '';
+        document.getElementById('songs-upload-section').style.display = 'none';
+        document.getElementById('upload-songs-with-album').checked = false;
+        
+        await loadAlbumes();
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error: ' + error.message, 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Crear Álbum';
+    }
+}
+
+// ==================== CANCIONES ====================
+async function loadCanciones() {
+    try {
+        const response = await fetch('/api/albumes');
+        const data = await response.json();
+        
+        const container = document.getElementById('songs-list');
+        
+        if (data.ok && data.albumes && data.albumes.length > 0) {
+            container.innerHTML = `<p class="loading">Hay ${data.albumes.length} álbum(es) registrado(s). Las canciones individuales aparecerán aquí.</p>`;
+        } else {
+            container.innerHTML = '<p class="loading">No hay canciones subidas aún</p>';
+        }
+    } catch (error) {
+        console.error('Error al cargar canciones:', error);
+    }
+}
+
+async function submitCancion(form) {
+    const formData = new FormData(form);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
+    
+    try {
+        const response = await fetch('/api/admin/upload/cancion', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.ok) {
+            showNotification('✓ Canción subida exitosamente', 'success');
+            form.reset();
+            document.getElementById('preview-audio').textContent = '';
+            document.getElementById('preview-cover-cancion').textContent = '';
+            await loadCanciones();
+        } else {
+            showNotification('Error: ' + data.mensaje, 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error al subir canción', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Subir Canción';
+    }
+}
+
+// ==================== SELECTS ====================
+async function loadArtistasSelect() {
+    try {
+        const response = await fetch('/api/artistas');
+        const data = await response.json();
+        
+        if (data.ok && data.artistas) {
+            const selects = document.querySelectorAll('#artista-album, #artista-cancion');
+            selects.forEach(select => {
+                select.innerHTML = '<option value="">Seleccionar artista</option>' +
+                    data.artistas.map(a => `<option value="${a.id}">${a.nombre_artista}</option>`).join('');
+            });
+        }
+    } catch (error) {
+        console.error('Error al cargar artistas:', error);
+    }
+}
+
+async function loadGenerosSelect() {
+    const generos = [
+        { id: 1, nombre: 'Pop' }, { id: 2, nombre: 'Rock' },
+        { id: 3, nombre: 'Hip Hop' }, { id: 4, nombre: 'Electrónica' },
+        { id: 5, nombre: 'Jazz' }, { id: 6, nombre: 'Clásica' },
+        { id: 7, nombre: 'Reggaeton' }, { id: 8, nombre: 'Salsa' },
+        { id: 9, nombre: 'Bachata' }, { id: 10, nombre: 'R&B' },
+        { id: 11, nombre: 'Country' }, { id: 12, nombre: 'Metal' }
+    ];
+    
+    const select = document.getElementById('genero-album');
+    select.innerHTML = '<option value="">Seleccionar género</option>' +
+        generos.map(g => `<option value="${g.id}">${g.nombre}</option>`).join('');
+}
+
+async function loadAlbumesSelect() {
+    try {
+        const response = await fetch('/api/albumes');
+        const data = await response.json();
+        
+        if (data.ok && data.albumes) {
+            const select = document.getElementById('album-cancion');
+            select.innerHTML = '<option value="">Seleccionar álbum</option>' +
+                data.albumes.map(a => `<option value="${a.id}">${a.titulo}</option>`).join('');
+        }
+    } catch (error) {
+        console.error('Error al cargar álbumes:', error);
+    }
+}
+
+// ==================== ESTADÍSTICAS ====================
+async function loadEstadisticas() {
+    try {
+        const [artistas, albumes] = await Promise.all([
+            fetch('/api/artistas').then(r => r.json()),
+            fetch('/api/albumes').then(r => r.json())
+        ]);
+        
+        document.getElementById('stat-artistas').textContent = artistas.artistas?.length || 0;
+        document.getElementById('stat-albumes').textContent = albumes.albumes?.length || 0;
+        document.getElementById('stat-canciones').textContent = '0';
+        document.getElementById('stat-usuarios').textContent = '0';
+        
+    } catch (error) {
+        console.error('Error al cargar estadísticas:', error);
+    }
+}
+
+// ==================== PREVIEWS ====================
+function setupFilePreviews() {
+    document.getElementById('avatar-artista')?.addEventListener('change', (e) => {
+        previewFile(e.target, 'preview-avatar');
+    });
+    
+    document.getElementById('cover-album')?.addEventListener('change', (e) => {
+        previewFile(e.target, 'preview-cover-album');
+    });
+    
+    document.getElementById('cover-cancion')?.addEventListener('change', (e) => {
+        previewFile(e.target, 'preview-cover-cancion');
+    });
+    
+    document.getElementById('archivo-cancion')?.addEventListener('change', (e) => {
+        previewAudioFile(e.target, 'preview-audio');
+    });
+    
+    document.getElementById('album-songs-files')?.addEventListener('change', (e) => {
+        previewMultipleSongs(e.target, 'preview-album-songs');
+    });
+}
+
+function previewFile(input, previewId) {
+    const preview = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        preview.textContent = `✓ ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+    }
+}
+
+function previewAudioFile(input, previewId) {
+    const preview = document.getElementById(previewId);
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        preview.textContent = `🎵 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+    }
+}
+
+function previewMultipleSongs(input, previewId) {
+    const preview = document.getElementById(previewId);
+    if (input.files && input.files.length > 0) {
+        const totalSize = Array.from(input.files).reduce((sum, file) => sum + file.size, 0);
+        const fileList = Array.from(input.files).map(f => f.name).join(', ');
+        preview.innerHTML = `
+            <strong>✓ ${input.files.length} canción(es) seleccionada(s)</strong><br>
+            <span style="font-size: 12px; opacity: 0.8;">Total: ${(totalSize / 1024 / 1024).toFixed(2)} MB</span><br>
+            <span style="font-size: 11px; opacity: 0.6;">${fileList}</span>
+        `;
+    }
+}
+
+// ==================== NOTIFICACIONES ====================
+function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    notification.textContent = message;
+    notification.className = `notification ${type} show`;
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 4000);
+}
+
+console.log('✅ Admin.js cargado con limpieza automática de nombres');
+    </script>
+</body>
+</html>

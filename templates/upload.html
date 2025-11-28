@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Canción - Mixy</title>
+    <link rel="stylesheet" href="/static/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .upload-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            background: rgba(37, 31, 69, 0.6);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eaeffe;
+            font-weight: 600;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(97, 87, 149, 0.4);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #615795, #7209b7);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(114, 9, 183, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2 style="color: white; text-align: center; margin-bottom: 32px;">Subir Nueva Canción</h2>
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Título de la Canción</label>
+                <input type="text" name="titulo" required>
+            </div>
+            <div class="form-group">
+                <label>Artista</label>
+                <select name="artista_id" required id="artista-select">
+                    <option value="">Seleccionar artista</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Álbum</label>
+                <select name="album_id" id="album-select">
+                    <option value="">Seleccionar álbum</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Duración (segundos)</label>
+                <input type="number" name="duracion_segundos" required>
+            </div>
+            <div class="form-group">
+                <label>Archivo de Audio (MP3)</label>
+                <input type="file" name="archivo" accept="audio/*" required>
+            </div>
+            <button type="submit" class="btn-submit">Subir Canción</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', loadFormData);
+        
+        async function loadFormData() {
+            // Cargar artistas
+            const respArtistas = await fetch('/api/artistas');
+            const dataArtistas = await respArtistas.json();
+            const selectArtista = document.getElementById('artista-select');
+            dataArtistas.artistas.forEach(a => {
+                selectArtista.innerHTML += `<option value="${a.id}">${a.nombre_artista}</option>`;
+            });
+            
+            // Cargar álbumes
+            const respAlbumes = await fetch('/api/albumes');
+            const dataAlbumes = await respAlbumes.json();
+            const selectAlbum = document.getElementById('album-select');
+            dataAlbumes.albumes.forEach(a => {
+                selectAlbum.innerHTML += `<option value="${a.id}">${a.titulo}</option>`;
+            });
+        }
+        
+        document.getElementById('upload-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('/api/upload/cancion', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.ok) {
+                    alert('Canción subida exitosamente');
+                    window.location.href = '/home';
+                } else {
+                    alert('Error: ' + data.mensaje);
+                }
+            } catch (error) {
+                alert('Error al subir canción');
+                console.error(error);
+            }
+        };
+    </script>
+</body>
+</html>
