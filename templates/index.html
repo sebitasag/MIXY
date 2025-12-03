@@ -1,268 +1,326 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
+<!DOCTYPE html> <!-- Indica que el documento usa HTML5 -->
+<html lang="es"> <!-- El idioma principal del documento es español -->
+
+<head> <!-- Inicio del encabezado del sitio (configuración, estilos, meta datos) -->
+
+  <meta charset="UTF-8"> <!-- Define codificación UTF-8 para admitir acentos y caracteres especiales -->
+
   <meta name="viewport" content="width=980, initial-scale=1.0">
-  <title>Mixy - Login & Registro</title>
-  
-  <!-- Font Awesome -->
+  <!-- Configura el tamaño de la vista en móviles (ancho fijo de 980px) -->
+
+  <title>Mixy - Login & Registro</title> <!-- Título que se muestra en la pestaña del navegador -->
+
+  <!-- Carga iconos desde Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  
-  <!-- Google Fonts -->
+
+  <!-- Carga fuentes desde Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+
+  <!-- Archivo CSS principal del proyecto -->
   <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-  <div class="container" id="main-container">
-    <!-- LOGIN FORM -->
-    <div class="form-section" id="login-section">
-      <div class="logo-login">
-        <i class="fas fa-circle-play"></i>
-        <h1>mixy</h1>
+
+</head> <!-- Fin del head -->
+
+<body> <!-- Inicio del contenido visible de la página -->
+
+  <div class="container" id="main-container"> <!-- Contenedor principal -->
+
+    <!-- ======================== SECCIÓN LOGIN ======================== -->
+    <div class="form-section" id="login-section"> <!-- Sección del formulario de login -->
+
+      <div class="logo-login"> <!-- Contenedor del logo y nombre -->
+        <i class="fas fa-circle-play"></i> <!-- Ícono del logo -->
+        <h1>mixy</h1> <!-- Título del proyecto -->
       </div>
-      <h2>Iniciar Sesión</h2>
-      <form id="login-form">
-        <div class="input-box">
-          <i class="fas fa-envelope"></i>
-          <input type="email" name="loginCorreo" placeholder="Correo electrónico" required>
+
+      <h2>Iniciar Sesión</h2> <!-- Título del formulario -->
+
+      <form id="login-form"> <!-- Formulario de login -->
+
+        <div class="input-box"> <!-- Caja de entrada para correo -->
+          <i class="fas fa-envelope"></i> <!-- Icono -->
+          <input type="email" name="loginCorreo" placeholder="Correo electrónico" required> <!-- Campo email -->
         </div>
-        <div class="input-box">
-          <i class="fas fa-lock"></i>
-          <input type="password" name="loginClave" placeholder="Contraseña" required>
+
+        <div class="input-box"> <!-- Caja de entrada para contraseña -->
+          <i class="fas fa-lock"></i> <!-- Icono -->
+          <input type="password" name="loginClave" placeholder="Contraseña" required> <!-- Campo password -->
         </div>
-        <div class="error-message" id="login-error"></div>
-        <button type="submit">
-          <i class="fas fa-right-to-bracket"></i>
+
+        <div class="error-message" id="login-error"></div> <!-- Div para mostrar errores de login -->
+
+        <button type="submit"> <!-- Botón de ingresar -->
+          <i class="fas fa-right-to-bracket"></i> <!-- Icono -->
           INGRESAR
         </button>
-      </form>
-      <a href="#" class="forgot-link">
-        <i class="fas fa-question-circle"></i>
+
+      </form> <!-- Fin formulario login -->
+
+      <a href="#" class="forgot-link"> <!-- Enlace recuperación contraseña -->
+        <i class="fas fa-question-circle"></i> <!-- Icono -->
         ¿Olvidaste tu contraseña?
       </a>
-    </div>
 
-    <!-- REGISTRO FORM -->
-    <div class="form-section hidden" id="registro-section">
-      <div class="logo-login">
+    </div> <!-- Fin login section -->
+
+    <!-- ======================== SECCIÓN REGISTRO ======================== -->
+    <div class="form-section hidden" id="registro-section"> <!-- Sección oculta de registro -->
+
+      <div class="logo-login"> <!-- Logo igual que en login -->
         <i class="fas fa-circle-play"></i>
         <h1>mixy</h1>
       </div>
-      <h2>Crear Cuenta</h2>
-      <form id="registro-form">
-        <div class="input-row">
-          <div class="input-box half">
+
+      <h2>Crear Cuenta</h2> <!-- Título del registro -->
+
+      <form id="registro-form"> <!-- Formulario registro -->
+
+        <div class="input-row"> <!-- Fila que contiene nombre y apellido -->
+
+          <div class="input-box half"> <!-- Caja para nombre -->
             <i class="fas fa-user"></i>
             <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
           </div>
-          <div class="input-box half">
+
+          <div class="input-box half"> <!-- Caja para apellido -->
             <i class="fas fa-user"></i>
             <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
           </div>
+
         </div>
-        <div class="input-box">
+
+        <div class="input-box"> <!-- Caja correo -->
           <i class="fas fa-envelope"></i>
           <input type="email" id="correo" name="correo" placeholder="Correo electrónico" required>
         </div>
-        <div class="input-box">
+
+        <div class="input-box"> <!-- Caja fecha de nacimiento -->
           <i class="fas fa-calendar"></i>
           <input type="date" id="nacimiento" name="nacimiento" required>
         </div>
-        <div class="input-box">
+
+        <div class="input-box"> <!-- Caja contraseña -->
           <i class="fas fa-lock"></i>
           <input type="password" id="password" name="clave" placeholder="Contraseña" required>
         </div>
-        <div class="error-message" id="registro-error"></div>
-        <button type="submit">
+
+        <div class="error-message" id="registro-error"></div> <!-- Mensaje error registro -->
+
+        <button type="submit"> <!-- Botón crear cuenta -->
           <i class="fas fa-user-plus"></i>
           CREAR CUENTA
         </button>
-      </form>
+
+      </form> <!-- Fin formulario registro -->
     </div>
 
-    <!-- SLIDE PANEL -->
-    <div class="slide-panel" id="slide-panel">
-      <div class="slide-content" id="slide-content">
-        <div class="slide-icon">
+    <!-- ======================== PANEL DESLIZANTE ======================== -->
+    <div class="slide-panel" id="slide-panel"> <!-- Panel lateral animado -->
+
+      <div class="slide-content" id="slide-content"> <!-- Contenido del panel -->
+
+        <div class="slide-icon"> <!-- Icono decorativo -->
           <i class="fas fa-music"></i>
         </div>
-        <h3 id="slide-title">¡Bienvenido a Mixy!</h3>
-        <p id="slide-text">Descubre, escucha y disfruta de tu música favorita</p>
-        <button id="slide-btn">
+
+        <h3 id="slide-title">¡Bienvenido a Mixy!</h3> <!-- Título dinámico -->
+
+        <p id="slide-text">Descubre, escucha y disfruta de tu música favorita</p> <!-- Texto dinámico -->
+
+        <button id="slide-btn"> <!-- Botón para alternar login/registro -->
           <i class="fas fa-user-plus"></i>
           Crear Cuenta
         </button>
+
       </div>
-    </div>
-  </div>
 
+    </div> <!-- Fin slide panel -->
+
+  </div> <!-- Fin contenedor principal -->
+
+  <!-- ======================== SCRIPT JS ======================== -->
   <script>
-// ==================== VARIABLES ====================
-const btnSlide = document.getElementById("slide-btn");
-const loginSection = document.getElementById("login-section");
-const registroSection = document.getElementById("registro-section");
-const slideTitle = document.getElementById("slide-title");
-const slideText = document.getElementById("slide-text");
-let mostrando = "login";
 
-// ==================== CAMBIO ENTRE LOGIN Y REGISTRO ====================
-btnSlide.addEventListener("click", () => {
-  if (mostrando === "login") {
-    // Mostrar registro
-    loginSection.classList.add("hidden");
-    registroSection.classList.remove("hidden");
-    
-    btnSlide.innerHTML = '<i class="fas fa-right-to-bracket"></i> Iniciar Sesión';
-    slideTitle.textContent = "¿Ya tienes cuenta?";
-    slideText.textContent = "Inicia sesión para acceder a tu biblioteca musical";
-    
-    // Limpiar errores
-    document.getElementById("login-error").classList.remove("show");
-    document.getElementById("registro-error").classList.remove("show");
-    
-    mostrando = "registro";
-  } else {
-    // Mostrar login
-    registroSection.classList.add("hidden");
-    loginSection.classList.remove("hidden");
-    
-    btnSlide.innerHTML = '<i class="fas fa-user-plus"></i> Crear Cuenta';
-    slideTitle.textContent = "¡Bienvenido a Mixy!";
-    slideText.textContent = "Descubre, escucha y disfruta de tu música favorita";
-    
-    // Limpiar errores
-    document.getElementById("login-error").classList.remove("show");
-    document.getElementById("registro-error").classList.remove("show");
-    
-    mostrando = "login";
-  }
-});
+    const btnSlide = document.getElementById("slide-btn"); // Botón que alterna login ↔ registro
+    const loginSection = document.getElementById("login-section"); // Sección login
+    const registroSection = document.getElementById("registro-section"); // Sección registro
+    const slideTitle = document.getElementById("slide-title"); // Título del panel
+    const slideText = document.getElementById("slide-text"); // Texto del panel
+    let mostrando = "login"; // Variable que indica qué sección está activa
 
-// ==================== REGISTRO ====================
-document.getElementById("registro-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  
-  const errorDiv = document.getElementById("registro-error");
-  const submitBtn = e.target.querySelector('button[type="submit"]');
-  
-  // Limpiar error anterior
-  errorDiv.classList.remove("show");
-  errorDiv.textContent = "";
-  
-  // Deshabilitar botón
-  submitBtn.classList.add("loading");
-  submitBtn.disabled = true;
+    // ================================================================
+    //              CAMBIO ENTRE LOGIN Y REGISTRO
+    // ================================================================
+    btnSlide.addEventListener("click", () => { // Evento click del botón deslizante
 
-  const datos = {
-    nombre: document.getElementById("nombre").value,
-    apellido: document.getElementById("apellido").value,
-    correo: document.getElementById("correo").value,
-    nacimiento: document.getElementById("nacimiento").value,
-    password: document.getElementById("password").value
-  };
+      if (mostrando === "login") { // Si se muestra el login...
 
-  try {
-    const res = await fetch("/api/registro", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(datos)
+        loginSection.classList.add("hidden"); // Oculta login
+        registroSection.classList.remove("hidden"); // Muestra registro
+
+        btnSlide.innerHTML = '<i class="fas fa-right-to-bracket"></i> Iniciar Sesión'; // Cambiar texto del botón
+        slideTitle.textContent = "¿Ya tienes cuenta?"; // Cambiar título
+        slideText.textContent = "Inicia sesión para acceder a tu biblioteca musical"; // Cambiar texto
+
+        // Limpiar cualquier error existente
+        document.getElementById("login-error").classList.remove("show");
+        document.getElementById("registro-error").classList.remove("show");
+
+        mostrando = "registro"; // Actualiza estado
+
+      } else { // Si se está mostrando el registro...
+
+        registroSection.classList.add("hidden"); // Oculta registro
+        loginSection.classList.remove("hidden"); // Muestra login
+
+        btnSlide.innerHTML = '<i class="fas fa-user-plus"></i> Crear Cuenta'; // Texto del botón
+        slideTitle.textContent = "¡Bienvenido a Mixy!"; // Título
+        slideText.textContent = "Descubre, escucha y disfruta de tu música favorita"; // Texto
+
+        // Limpiar errores
+        document.getElementById("login-error").classList.remove("show");
+        document.getElementById("registro-error").classList.remove("show");
+
+        mostrando = "login"; // Actualiza estado
+      }
     });
 
-    const data = await res.json();
+    // ================================================================
+    //                        REGISTRO
+    // ================================================================
+    document.getElementById("registro-form").addEventListener("submit", async (e) => {
 
-    if (data.ok) {
-      // Registro exitoso - cambiar a login
-      e.target.reset();
-      registroSection.classList.add("hidden");
-      loginSection.classList.remove("hidden");
-      
-      btnSlide.innerHTML = '<i class="fas fa-user-plus"></i> Crear Cuenta';
-      slideTitle.textContent = "¡Bienvenido a Mixy!";
-      slideText.textContent = "Descubre, escucha y disfruta de tu música favorita";
-      
-      mostrando = "login";
-      
-      // Mostrar mensaje de éxito en login
-      const loginError = document.getElementById("login-error");
-      loginError.style.background = "rgba(29, 215, 96, 0.1)";
-      loginError.style.borderColor = "rgba(29, 215, 96, 0.3)";
-      loginError.style.color = "#1ED760";
-      loginError.textContent = "✓ Cuenta creada exitosamente. Inicia sesión";
-      loginError.classList.add("show");
-      
-      setTimeout(() => {
-        loginError.classList.remove("show");
-        loginError.style.background = "";
-        loginError.style.borderColor = "";
-        loginError.style.color = "";
-      }, 5000);
-      
-    } else {
-      errorDiv.textContent = data.mensaje || "Error al registrar usuario";
-      errorDiv.classList.add("show");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    errorDiv.textContent = "Error de conexión. Intenta nuevamente";
-    errorDiv.classList.add("show");
-  } finally {
-    submitBtn.classList.remove("loading");
-    submitBtn.disabled = false;
-  }
-});
+      e.preventDefault(); // Evita recargar página
 
-// ==================== LOGIN ====================
-document.getElementById("login-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  
-  const errorDiv = document.getElementById("login-error");
-  const submitBtn = e.target.querySelector('button[type="submit"]');
-  
-  // Limpiar error anterior
-  errorDiv.classList.remove("show");
-  errorDiv.textContent = "";
-  errorDiv.style.background = "";
-  errorDiv.style.borderColor = "";
-  errorDiv.style.color = "";
-  
-  // Deshabilitar botón
-  submitBtn.classList.add("loading");
-  submitBtn.disabled = true;
+      const errorDiv = document.getElementById("registro-error"); // Div de error
+      const submitBtn = e.target.querySelector('button[type="submit"]'); // Botón enviar
 
-  const datos = {
-    correo: e.target.loginCorreo.value,
-    password: e.target.loginClave.value
-  };
+      errorDiv.classList.remove("show"); // Oculta error
+      errorDiv.textContent = ""; // Limpia texto
 
-  try {
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(datos)
+      submitBtn.classList.add("loading"); // Animación de cargando
+      submitBtn.disabled = true; // Deshabilita botón
+
+      // Datos a enviar al backend
+      const datos = {
+        nombre: document.getElementById("nombre").value,
+        apellido: document.getElementById("apellido").value,
+        correo: document.getElementById("correo").value,
+        nacimiento: document.getElementById("nacimiento").value,
+        password: document.getElementById("password").value
+      };
+
+      try {
+
+        // Solicitud POST al API
+        const res = await fetch("/api/registro", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datos)
+        });
+
+        const data = await res.json(); // Se convierte respuesta en JSON
+
+        if (data.ok) { // Si la respuesta es correcta...
+
+          e.target.reset(); // Limpia el formulario
+          registroSection.classList.add("hidden"); // Oculta registro
+          loginSection.classList.remove("hidden"); // Muestra login
+
+          // Restaurar panel
+          btnSlide.innerHTML = '<i class="fas fa-user-plus"></i> Crear Cuenta';
+          slideTitle.textContent = "¡Bienvenido a Mixy!";
+          slideText.textContent = "Descubre, escucha y disfruta de tu música favorita";
+
+          mostrando = "login"; // Actualiza estado
+
+          // Mensaje verde en login
+          const loginError = document.getElementById("login-error");
+          loginError.style.background = "rgba(29, 215, 96, 0.1)";
+          loginError.style.borderColor = "rgba(29, 215, 96, 0.3)";
+          loginError.style.color = "#1ED760";
+          loginError.textContent = "✓ Cuenta creada exitosamente. Inicia sesión";
+          loginError.classList.add("show");
+
+          // Quitar mensaje después de 5 segundos
+          setTimeout(() => {
+            loginError.classList.remove("show");
+            loginError.style.background = "";
+            loginError.style.borderColor = "";
+            loginError.style.color = "";
+          }, 5000);
+
+        } else { // Si el backend responde error...
+          errorDiv.textContent = data.mensaje || "Error al registrar usuario";
+          errorDiv.classList.add("show");
+        }
+
+      } catch (error) {
+
+        errorDiv.textContent = "Error de conexión. Intenta nuevamente";
+        errorDiv.classList.add("show");
+
+      } finally {
+
+        submitBtn.classList.remove("loading"); // Quitar animación
+        submitBtn.disabled = false; // Habilitar botón
+      }
     });
 
-    const data = await res.json();
+    // ================================================================
+    //                             LOGIN
+    // ================================================================
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
 
-    if (data.ok) {
-      // Login exitoso - redirigir a home
-      window.location.href = "/home";
-    } else {
-      errorDiv.textContent = data.mensaje || "Correo o contraseña incorrectos";
-      errorDiv.classList.add("show");
-      submitBtn.classList.remove("loading");
-      submitBtn.disabled = false;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    errorDiv.textContent = "Error de conexión. Intenta nuevamente";
-    errorDiv.classList.add("show");
-    submitBtn.classList.remove("loading");
-    submitBtn.disabled = false;
-  }
-});
+      e.preventDefault(); // Evita recargar página
 
-console.log("✅ Mixy login cargado");
+      const errorDiv = document.getElementById("login-error"); // Div de error
+      const submitBtn = e.target.querySelector('button[type="submit"]'); // Botón enviar
+
+      errorDiv.classList.remove("show"); // Oculta error
+      errorDiv.textContent = ""; // Limpia mensaje
+
+      submitBtn.classList.add("loading"); // Cargando
+      submitBtn.disabled = true; // Bloquea botón
+
+      const datos = { // Datos del formulario
+        correo: e.target.loginCorreo.value,
+        password: e.target.loginClave.value
+      };
+
+      try {
+
+        // Envío al backend
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datos)
+        });
+
+        const data = await res.json(); // Respuesta backend
+
+        if (data.ok) { // Si login es correcto...
+          window.location.href = "/home"; // Redirigir a página principal
+
+        } else { // Credenciales incorrectas
+          errorDiv.textContent = data.mensaje || "Correo o contraseña incorrectos";
+          errorDiv.classList.add("show");
+        }
+
+      } catch (error) { // Error conexión
+
+        errorDiv.textContent = "Error de conexión. Intenta nuevamente";
+        errorDiv.classList.add("show");
+
+      }
+
+      submitBtn.classList.remove("loading"); // Quitar animación
+      submitBtn.disabled = false; // Reactivar boton
+    });
+
+    console.log("✅ Mixy login cargado"); // Mensaje en consola
+
   </script>
-</body>
-</html>
+
+</body> <!-- Fin del body -->
+</html> <!-- Fin del documento -->
