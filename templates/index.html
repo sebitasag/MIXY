@@ -47,6 +47,8 @@
           <input type="password" name="loginClave" placeholder="Contraseña" required> <!-- Campo password -->
         </div>
 
+        
+
         <div class="error-message" id="login-error"></div> <!-- Div para mostrar errores de login -->
 
         <button type="submit"> <!-- Botón de ingresar -->
@@ -56,7 +58,7 @@
 
       </form> <!-- Fin formulario login -->
 
-      <a href="#" class="forgot-link"> <!-- Enlace recuperación contraseña -->
+      <a href="#" id="OlvidoContraseñaEnlace" class="forgot-link"> <!-- Enlace recuperación contraseña -->
         <i class="fas fa-question-circle"></i> <!-- Icono -->
         ¿Olvidaste tu contraseña?
       </a>
@@ -113,6 +115,86 @@
 
       </form> <!-- Fin formulario registro -->
     </div>
+    
+
+
+
+
+
+
+
+
+<!-- olvidaste tu contraseña-->
+    <div class="form-section hidden" id="correoOlvidoContraseña-section">
+      <div class="logo-login"> <!-- Logo igual que en login -->
+        <i class="fas fa-circle-play"></i>
+        <h1>mixy</h1>
+      </div>
+      <h2>¿Olvidaste Tu Contraseña?</h2>
+      <form id="olvidasteTuContraseñaCorreo">
+        <div class="input-box"> <!-- Caja de entrada para correo -->
+          <i class="fas fa-envelope"></i> <!-- Icono -->
+          <input type="email" name="OlvidoContraseñaCorreo" id="OlvidoContraseñaCorreo" placeholder="Correo electrónico" required> <!-- Campo email -->
+        </div>
+        <div style="color: white; margin: 30px;"> Te enviaremos un correo para verificar tu cuenta</div>
+        <div class="error-message " id="olvidasteContraseñaEnviarCodigo-error"></div>
+        <button type="submit"> 
+          <i class="fas fa-envelope"></i>
+          ENVIAR CORREO
+        </button>
+      </form>
+    </div>
+<!-- codigo verificacion -->
+    <div class="form-section hidden" id="codigoOlvidoContraseña-section">
+      <div class="logo-login"> <!-- Contenedor del logo y nombre -->
+        <i class="fas fa-circle-play"></i> <!-- Ícono del logo -->
+        <h1>mixy</h1> <!-- Título del proyecto -->
+      </div>
+      <h2>¿Olvidaste Tu Contraseña?</h2>
+      <form>
+        <div class="input-box"> <!-- Caja contraseña -->
+          <i class="fas fa-hashtag"></i>
+          <input type="number" id="codigoOlvidasteContraseña" name="codigo" placeholder="Codigo" required >
+        </div>
+        <div style="color: white; margin: 30px;">Ingrese el codigo que se le envio al correo</div>
+        <div class="error-message" id="olvidasteContraseñaComprobarCodigo-error"></div>
+        <button type="submit"> 
+          <i class="fas fa-key"></i>
+          COMPROBAR CODIGO
+        </button>
+      </form>
+    </div>
+<!-- cambiar contraseña -->
+    <div class="form-section hidden" id="cambiarOlvidoContraseña-section">
+      <div class="logo-login"> <!-- Contenedor del logo y nombre -->
+        <i class="fas fa-circle-play"></i> <!-- Ícono del logo -->
+        <h1>mixy</h1> <!-- Título del proyecto -->
+      </div>
+      <h2>Cambiar Contraseña</h2>
+      <form>
+        <div class="input-box"> <!-- Caja contraseña -->
+          <i class="fas fa-lock"></i>
+          <input type="password" id="contraseña_cambiar" name="contraseña_cambiar" placeholder="Contraseña" required>
+        </div>
+        <div class="input-box"> <!-- Caja contraseña -->
+          <i class="fas fa-lock"></i>
+          <input type="password" id="confirmar_contraseña_cambiar" name="confirmar_contraseña_cambiar" placeholder="Confirmar Contraseña" required>
+        </div>
+        <div style="color: white; margin: 30px;">Ingrese la nueva contraseña</div>
+        <div class="error-message" id="olvidasteContraseñaCambiarContraseña-error"></div>
+        <button type="submit"> 
+          <i class="fas fa-key"></i>
+          CAMBIAR CONTRASEÑA
+        </button>
+      </form>
+    </div>
+
+
+
+
+
+
+
 
     <!-- ======================== PANEL DESLIZANTE ======================== -->
     <div class="slide-panel" id="slide-panel"> <!-- Panel lateral animado -->
@@ -146,8 +228,17 @@
     const registroSection = document.getElementById("registro-section"); // Sección registro
     const slideTitle = document.getElementById("slide-title"); // Título del panel
     const slideText = document.getElementById("slide-text"); // Texto del panel
-    let mostrando = "login"; // Variable que indica qué sección está activa
 
+
+// variables menu cambiar contraseña
+    const olvidoContraseñaEnlace = document.getElementById("OlvidoContraseñaEnlace")
+    const correoOlvidoContraseñaSection = document.getElementById("correoOlvidoContraseña-section");
+    const codigoOlvidoContraseñaSection = document.getElementById("codigoOlvidoContraseña-section");
+    const cambiarOlvidoContraseñaSection = document.getElementById("cambiarOlvidoContraseña-section");
+// fin variables menu cambiar contraseña
+
+
+    let mostrando = "login"; // Variable que indica qué sección está activa
     // ================================================================
     //              CAMBIO ENTRE LOGIN Y REGISTRO
     // ================================================================
@@ -157,6 +248,13 @@
 
         loginSection.classList.add("hidden"); // Oculta login
         registroSection.classList.remove("hidden"); // Muestra registro
+
+        //menus cambiar contraseña ocultar
+        const olvidoContraseña = [correoOlvidoContraseñaSection, codigoOlvidoContraseñaSection, cambiarOlvidoContraseñaSection]
+        olvidoContraseña.forEach(menu =>
+          menu.classList.add("hidden")
+        )
+        //finmenus cambiar contraseña
 
         btnSlide.innerHTML = '<i class="fas fa-right-to-bracket"></i> Iniciar Sesión'; // Cambiar texto del botón
         slideTitle.textContent = "¿Ya tienes cuenta?"; // Cambiar título
@@ -319,6 +417,102 @@
     });
 
     console.log("✅ Mixy login cargado"); // Mensaje en consola
+
+
+
+
+
+
+
+
+
+//abrir olvido su contraseña, enlace
+    olvidoContraseñaEnlace.addEventListener("click", ()=>{
+      correoOlvidoContraseñaSection.classList.remove("hidden")
+      loginSection.classList.add("hidden")
+    })
+// enviar correo
+    const formularioCorreoOlvidarContraseña = document.getElementById("olvidasteTuContraseñaCorreo")
+    formularioCorreoOlvidarContraseña.addEventListener("submit", async (e)=>{
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      e.preventDefault()
+      submitBtn.classList.add("loading"); // Animación de cargando
+      submitBtn.disabled = true; 
+      const correoOlvidoContraseña = document.getElementById("OlvidoContraseñaCorreo").value
+      const res = await fetch(`/correo_validacion/${correoOlvidoContraseña}`, {method:"POST"})
+      const mensg = await res.json()
+      if (mensg["codigo"]) {
+        correoOlvidoContraseñaSection.classList.add("hidden")
+        codigoOlvidoContraseñaSection.classList.remove("hidden")
+      } else {
+        const mensajeError = document.getElementById("olvidasteContraseñaEnviarCodigo-error")
+        mensajeError.innerHTML = mensg["mensaje"]
+        mensajeError.classList.add("show")
+      }
+      submitBtn.classList.remove("loading"); // Animación de cargando
+      submitBtn.disabled = false; 
+    })
+//comprobar elcodigo
+    codigoOlvidoContraseñaSection.addEventListener("submit", async (e)=>{
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      e.preventDefault()
+      submitBtn.classList.add("loading"); // Animación de cargando
+      submitBtn.disabled = true; 
+      const codigoOlvidasteContraseña = document.getElementById("codigoOlvidasteContraseña").value
+      const res = await fetch(`/validar_codigo/${codigoOlvidasteContraseña}`, {method: "POST"})
+      const mensg = await res.json()
+      if (mensg["codigo"]) {
+        codigoOlvidoContraseñaSection.classList.add("hidden")
+        cambiarOlvidoContraseñaSection.classList.remove("hidden")
+      } else {
+        const mensajeError = document.getElementById("olvidasteContraseñaComprobarCodigo-error")
+        mensajeError.innerHTML = mensg["mensaje"]
+        mensajeError.classList.add("show")
+      }
+      submitBtn.classList.remove("loading"); // Animación de cargando
+      submitBtn.disabled = false; 
+    })
+// cambiar contraseña
+    cambiarOlvidoContraseñaSection.addEventListener("submit", async (e)=>{
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      e.preventDefault()
+      submitBtn.classList.add("loading"); // Animación de cargando
+      submitBtn.disabled = true; 
+      const olvidasteContraseñaCambiarContraseñaError = document.getElementById("olvidasteContraseñaCambiarContraseña-error")
+      const contraseñaCambiar = document.getElementById("contraseña_cambiar").value
+      const confirmarContraseñaCambiar = document.getElementById("confirmar_contraseña_cambiar").value
+      if (!(contraseñaCambiar==confirmarContraseñaCambiar)) {
+        olvidasteContraseñaCambiarContraseñaError.innerHTML = "Las contraseñas no son iguales"
+        olvidasteContraseñaCambiarContraseñaError.classList.add("show")
+      } else {
+        const res = await fetch(`/cambiar_contraseña/${contraseñaCambiar}`, {method: "POST"})
+        const mensg = await res.json()
+        if (mensg["cambio"]) {
+          cambiarOlvidoContraseñaSection.classList.add("hidden")
+          loginSection.classList.remove("hidden")
+          // Mensaje verde en login
+          const loginError = document.getElementById("login-error");
+          loginError.style.background = "rgba(29, 215, 96, 0.1)";
+          loginError.style.borderColor = "rgba(29, 215, 96, 0.3)";
+          loginError.style.color = "#1ED760";
+          loginError.textContent = "✓ Contraseña Cambiada";
+          loginError.classList.add("show");
+          // Quitar mensaje después de 5 segundos
+          setTimeout(() => {
+            loginError.classList.remove("show");
+            loginError.style.background = "";
+            loginError.style.borderColor = "";
+            loginError.style.color = "";
+          }, 5000);
+        } else {
+          const olvidasteContraseñaCambiarContraseñaError = document.getElementById("olvidasteContraseñaCambiarContraseña-error")
+          olvidasteContraseñaCambiarContraseñaError.innerHTML = mensg["mensaje"]
+          olvidasteContraseñaCambiarContraseñaError.classList.add("show")
+        }
+      }
+      submitBtn.classList.remove("loading"); // Animación de cargando
+      submitBtn.disabled = false; 
+    })
 
   </script>
 

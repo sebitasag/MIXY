@@ -338,8 +338,7 @@ def perfil():
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
     try:
-        cur.execute('SELECT id, nombre, apellido, correo, nacimiento FROM usuarios WHERE id = %s', 
-                   (session.get("usuario_id"),))
+        cur.execute('SELECT id, nombre, apellido, correo, nacimiento FROM usuarios WHERE id = %s', (session.get("usuario_id"),))
         usuario = cur.fetchone()
         return jsonify({
             "ok": True, 
@@ -857,8 +856,7 @@ def toggle_album_favorito(album_id):
         
         if favorito:
             # Eliminar de favoritos
-            cur.execute("DELETE FROM favoritos_albumes WHERE usuario_id = %s AND album_id = %s", 
-                       (usuario_id, album_id))
+            cur.execute("DELETE FROM favoritos_albumes WHERE usuario_id = %s AND album_id = %s", (usuario_id, album_id))
             conn.commit()
             return jsonify({'ok': True, 'added': False, 'mensaje': 'Eliminado de favoritos'})
         else:
@@ -961,6 +959,148 @@ def check_playlist_favorito(playlist_id):
     finally:
         cur.close()
         conn.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# mandar correo y olvido contraseña
+@app.route("/correo_validacion/<correo>", methods=["POST", "GET"])
+def correo_validacion(correo):
+    if request.method != "POST":
+        return redirect(url_for("inicio"))
+    import random
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart 
+    import smtplib
+    emisor="mixy.oficial1@gmail.com" #correo emisor
+    verficacion="geqw qvdm muuz ftco" #verifiacion de dos pasos
+    server="smtp.gmail.com" #se puede cambiar por un server mejor
+    port=587
+    receptor=correo
+    codigo=random.randint(100000,999999)
+    mensaje=MIMEMultipart()
+    mensaje["From"]=emisor
+    mensaje["To"]=receptor
+    mensaje["Subject"]=f"Codigo de verificacion: {codigo}" 
+    cuerpo=f""" <!DOCTYPE html>
+<html lang="es">
+  <body style="margin:0; padding:0; background:#f4f4f4; font-family:Arial, sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td align="center" style="padding: 40px 0;">
+          
+          <table role="presentation" width="90%" cellpadding="0" cellspacing="0" style="max-width:600px; background:#ffffff; border-radius:12px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+            
+            <!-- Encabezado -->
+            <tr>
+              <td style="background:#1e40af; padding:25px; text-align:center; color:#ffffff;">
+                <h1 style="margin:0; font-size:28px; font-weight:bold;">Código de Verificación</h1>
+              </td>
+            </tr>
+
+            <!-- Contenido principal -->
+            <tr>
+              <td style="padding:30px; font-size:16px; line-height:1.6; color:#333;">
+                <p>Hola,</p>
+                <p>Tu código de verificación es:</p>
+
+                <div style="text-align:center; margin:20px 0;">
+                  <span style="display:inline-block; padding:15px 25px; font-size:24px; background:#1e40af; color:#ffffff; border-radius:10px; font-weight:bold; letter-spacing:2px;">
+                    {codigo}
+                  </span>
+                </div>
+
+                <p>Este código es válido por pocos minutos. Si no solicitaste este código, puedes ignorar este mensaje.</p>
+              </td>
+            </tr>
+
+            <!-- Pie de página -->
+            <tr>
+              <td style="background:#f0f0f0; padding:15px; text-align:center; color:#777; font-size:14px;">
+                © 2025 Tu Aplicación — Todos los derechos reservados.
+              </td>
+            </tr>
+
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+ """
+    mensaje.attach(MIMEText(cuerpo, "html"))
+    try:
+        with smtplib.SMTP(server, port) as smtp:
+            smtp.starttls()
+            smtp.login(emisor, verficacion)
+            smtp.send_message(mensaje)
+            session["codigo"]=codigo
+            session["correo"]=correo
+            return jsonify({"codigo": True, "mensaje": "Correo enviado"})
+    except Exception as e:
+        return jsonify({"codigo":False,"mensaje": "No se pudo enviar el correo, intente mas tarde"})
+#valiudar codigo
+@app.route("/validar_codigo/<codigo>", methods=["POST", "GET"])
+def validar_codigo(codigo):
+    if request.method != "POST":
+        return redirect(url_for("inicio"))
+    try:
+        codigoS = str(session["codigo"])
+        if codigo==codigoS:
+            session["codigo_correcto"]=True
+            return jsonify({"codigo": True})
+        return jsonify({"codigo": False, "mensaje": "Codigo incorrecto"})
+    except:
+        return jsonify({"codigo": False, "mensaje": "Codigo no enviado"})
+#cambiar contraseña
+@app.route("/cambiar_contraseña/<contrasena>", methods=["POST", "GET"])
+def cambiar_contraseña(contrasena):
+    if request.method != "POST":
+        return redirect(url_for("inicio"))
+    try:
+        if not session["codigo_correcto"]:
+            return jsonify({"cambio": False, "mensaje": "Correo no verificado"})
+        password_hash = bcrypt.hashpw(contrasena.encode("utf-8"), bcrypt.gensalt()).decode('utf-8')
+        conn = get_connection()
+        if conn==None:
+            return jsonify({"cambio": False, "mensaje": "error con la base de datos"})
+        cursor = conn.cursor(cursor_factory=extras.RealDictCursor)
+        cursor.execute("UPDATE usuarios SET password = %s WHERE correo = %s", (password_hash, session["correo"]))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        session.clear()
+        return jsonify({"cambio": True})
+    except:
+        return jsonify({"cambio": False, "mensaje": "Correo no verificado"})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ==================== INICIAR SERVIDOR ====================
